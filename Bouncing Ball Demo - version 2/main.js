@@ -1,5 +1,6 @@
 // set up canvas
-
+const para = document.querySelector('p');
+let count = 0;
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -143,6 +144,8 @@ class EvilCircle extends Shape{
    
                if (distance < this.size + ball.size) {
                  ball.exists=false;
+                 count--;
+                 para.textContent = 'Ball Count: ' + count;
                }
             }
          }
@@ -151,6 +154,7 @@ class EvilCircle extends Shape{
 }
 
 const balls = [];
+
 
 while (balls.length < 25) {
    const size = random(10,20);
@@ -164,15 +168,16 @@ while (balls.length < 25) {
    );
 
   balls.push(ball);
+  count++;
+  para.textContent = 'Ball Count: ' + count;
 }
 
 const evilcircle = new EvilCircle(random(0 + 10,width-10), random(0 + 10,height-10));
-let count=balls.length;
 
 function loop() {
    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
    ctx.fillRect(0, 0,  width, height);
-   const para = document.querySelector('p');
+   
    for (const ball of balls) {
        if(ball.exists){
             ball.draw();
@@ -184,18 +189,7 @@ function loop() {
        evilcircle.checkBounds();
        evilcircle.collisionDetect();
    }
-   for(const ball of balls){
-    if(ball['exists']===false){
-        count--;
-    }
-    
-    para.textContent=para.textContent + ` ${count}`;
-}
-    
    requestAnimationFrame(loop);
 }
 
 loop();
-
-
-
